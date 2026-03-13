@@ -41,6 +41,12 @@ constructor(
         navigate(NavigationDestination.CurlImport)
     }
 
+    fun onCloudflareOptionSelected() = runAction {
+        logInfo("Cloudflare DNS template selected")
+        closeScreen()
+        navigate(NavigationDestination.CloudflareConfig)
+    }
+
     data class InitData(
         val categoryId: CategoryId,
     )

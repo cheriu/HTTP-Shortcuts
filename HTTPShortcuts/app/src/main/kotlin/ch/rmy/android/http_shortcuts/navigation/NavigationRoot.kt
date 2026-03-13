@@ -11,6 +11,7 @@ import ch.rmy.android.http_shortcuts.activities.categories.CategoriesScreen
 import ch.rmy.android.http_shortcuts.activities.categories.editor.CategoryEditorScreen
 import ch.rmy.android.http_shortcuts.activities.categories.sections.CategorySectionsScreen
 import ch.rmy.android.http_shortcuts.activities.certpinning.CertPinningScreen
+import ch.rmy.android.http_shortcuts.activities.cloudflare_config.CloudflareConfigScreen
 import ch.rmy.android.http_shortcuts.activities.contact.ContactScreen
 import ch.rmy.android.http_shortcuts.activities.curl_import.CurlImportScreen
 import ch.rmy.android.http_shortcuts.activities.documentation.DocumentationScreen
@@ -116,6 +117,10 @@ fun NavigationRoot(navController: NavHostController) {
             CurlImportScreen()
         }
 
+        composable(NavigationDestination.CloudflareConfig) {
+            CloudflareConfigScreen()
+        }
+
         composable(NavigationDestination.Documentation) { backStackEntry ->
             DocumentationScreen(
                 url = NavigationDestination.Documentation.extractUrl(backStackEntry.arguments!!),
@@ -189,6 +194,7 @@ fun NavigationRoot(navController: NavHostController) {
                 categoryId = NavigationDestination.ShortcutEditor.extractCategoryId(backStackEntry.arguments!!),
                 shortcutId = NavigationDestination.ShortcutEditor.extractShortcutId(backStackEntry.arguments!!),
                 curlCommandId = NavigationDestination.ShortcutEditor.extractCurlCommandId(backStackEntry.arguments!!),
+                cloudflareConfigId = NavigationDestination.ShortcutEditor.extractCloudflareConfigId(backStackEntry.arguments!!),
                 executionType = NavigationDestination.ShortcutEditor.extractExecutionType(backStackEntry.arguments!!),
                 recoveryMode = NavigationDestination.ShortcutEditor.extractRecoveryMode(backStackEntry.arguments!!),
             )

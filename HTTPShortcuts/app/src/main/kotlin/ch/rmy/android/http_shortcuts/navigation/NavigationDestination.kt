@@ -138,6 +138,10 @@ sealed interface NavigationDestination {
         override val path = "curlImport"
     }
 
+    object CloudflareConfig : NoArgNavigationDestination {
+        override val path = "cloudflareConfig"
+    }
+
     object Documentation : NavigationDestination {
         private const val ARG_URL = "url"
 
@@ -300,6 +304,7 @@ sealed interface NavigationDestination {
         private const val ARG_CATEGORY_ID = "categoryId"
         private const val ARG_SHORTCUT_ID = "shortcutId"
         private const val ARG_CURL_COMMAND_ID = "curlCommandId"
+        private const val ARG_CLOUDFLARE_CONFIG_ID = "cloudflareConfigId"
         private const val ARG_RECOVERY_MODE = "recoveryMode"
 
         override val path = "shortcutEditor/main"
@@ -310,6 +315,7 @@ sealed interface NavigationDestination {
                 optionalStringArg(ARG_EXECUTION_TYPE),
                 optionalStringArg(ARG_SHORTCUT_ID),
                 optionalStringArg(ARG_CURL_COMMAND_ID),
+                optionalStringArg(ARG_CLOUDFLARE_CONFIG_ID),
                 optionalBooleanArg(ARG_RECOVERY_MODE),
             )
 
@@ -318,12 +324,14 @@ sealed interface NavigationDestination {
             categoryId: CategoryId,
             executionType: ShortcutExecutionType? = null,
             curlCommandId: NavigationArgStore.ArgStoreId? = null,
+            cloudflareConfigId: NavigationArgStore.ArgStoreId? = null,
             recoveryMode: Boolean = false,
         ) = buildNavigationRequest {
             pathPart(categoryId)
             parameter(ARG_EXECUTION_TYPE, executionType?.type)
             parameter(ARG_SHORTCUT_ID, shortcutId)
             parameter(ARG_CURL_COMMAND_ID, curlCommandId)
+            parameter(ARG_CLOUDFLARE_CONFIG_ID, cloudflareConfigId)
             parameter(ARG_RECOVERY_MODE, recoveryMode)
         }
 
@@ -339,6 +347,10 @@ sealed interface NavigationDestination {
 
         fun extractCurlCommandId(bundle: Bundle): NavigationArgStore.ArgStoreId? =
             bundle.getEncodedString(ARG_CURL_COMMAND_ID)
+                ?.let(NavigationArgStore::ArgStoreId)
+
+        fun extractCloudflareConfigId(bundle: Bundle): NavigationArgStore.ArgStoreId? =
+            bundle.getEncodedString(ARG_CLOUDFLARE_CONFIG_ID)
                 ?.let(NavigationArgStore::ArgStoreId)
 
         fun extractRecoveryMode(bundle: Bundle): Boolean =

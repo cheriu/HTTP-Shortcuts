@@ -2,6 +2,7 @@ package ch.rmy.android.http_shortcuts.data.domains.shortcuts
 
 import ch.rmy.android.framework.extensions.getCaseInsensitive
 import ch.rmy.android.framework.extensions.takeUnlessEmpty
+import ch.rmy.android.http_shortcuts.activities.cloudflare_config.CloudflareConfig
 import ch.rmy.android.http_shortcuts.data.Database
 import ch.rmy.android.http_shortcuts.data.domains.BaseRepository
 import ch.rmy.android.http_shortcuts.data.domains.categories.CategoryId
@@ -566,6 +567,74 @@ constructor(
                     parameterSortingOrder++
                 }
             }
+        }
+    }
+
+    suspend fun applyCloudflareTemplate(config: CloudflareConfig) {
+        commitTransactionForShortcut { shortcut ->
+            val recordType = when (config.ipVersion) {
+                IpVersion.V4 -> "A"
+                IpVersion.V6 -> "AAAA"
+            }
+            val content = when (config.ipVersion) {
+                IpVersion.V4 -> "{{ipv4Addr}}"
+                IpVersion.V6 -> "{{ipv6Addr}}"
+            }
+
+            val newShortcut = shortcut.copy(
+                name = config.domainName,
+                method = HttpMethod.PUT,
+                url = "https://api.cloudflare.com/client/v4/zones/${config.zoneId}/dns_records/${config.dnsRecordId}",
+                requestBodyType = RequestBodyType.CUSTOM_TEXT,
+                contentType = "application/json",
+                bodyContent = buildString {
+                    append("{\n")
+                    append("  \"name\": \"")
+                    append(config.domainName)
+                    append("\",\n")
+                    append("  \"ttl\": ")
+                    append(config.ttl)
+                    append(",\n")
+                    append("  \"type\": \"")
+                    append(recordType)
+                    append("\",\n")
+                    append("  \"comment\": \"")
+                    append(config.comment)
+                    append("\",\n")
+                    append("  \"content\": \"")
+                    append(content)
+                    append("\",\n")
+                    append("  \"proxied\": ")
+                    append(config.proxied)
+                    append(",\n")
+                    append("  \"private_routing\": ")
+                    append(config.privateRouting)
+                    append("\n")
+                    append("}")
+                },
+                authenticationType = null,
+                authToken = "",
+            )
+            shortcutDao().insertOrUpdateShortcut(newShortcut)
+
+            val requestHeaderDao = requestHeaderDao()
+            requestHeaderDao.deleteRequestHeaderByShortcutId(TEMPORARY_ID)
+            requestHeaderDao.insertOrUpdateRequestHeader(
+                RequestHeader(
+                    shortcutId = TEMPORARY_ID,
+                    key = HttpHeaders.CONTENT_TYPE,
+                    value = "application/json",
+                    sortingOrder = 0,
+                ),
+            )
+            requestHeaderDao.insertOrUpdateRequestHeader(
+                RequestHeader(
+                    shortcutId = TEMPORARY_ID,
+                    key = HttpHeaders.AUTHORIZATION,
+                    value = "Bearer ${config.apiToken}",
+                    sortingOrder = 1,
+                ),
+            )
         }
     }
 

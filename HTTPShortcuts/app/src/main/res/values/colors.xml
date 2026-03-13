@@ -6,6 +6,8 @@
     <item name="primary_dark" type="color">#FF0277BD</item>
     <item name="global_variable" type="color">#FF3F51B5</item>
     <item name="local_variable" type="color">#B5723F</item>
+    <item name="ipv4_addr" type="color">#FFB58900</item>
+    <item name="ipv6_addr" type="color">#FFD33682</item>
     <item name="textarea_background" type="color">#FFEFEFEF</item>
     <item name="widget_preview_background" type="color">#99A0A0A0</item>
     <item name="splash_background" type="color">@color/brand_icon</item>

@@ -10,6 +10,9 @@ import java.util.regex.Pattern.quote
 
 object Variables {
 
+    const val IPV4_ADDR_VARIABLE_KEY = "ipv4Addr"
+    const val IPV6_ADDR_VARIABLE_KEY = "ipv6Addr"
+
     const val KEY_MAX_LENGTH = 30
     const val VARIABLE_KEY_REGEX = "[A-Za-z0-9_]{1,$KEY_MAX_LENGTH}"
     private const val VARIABLE_PLACEHOLDER_INNER_REGEX = "($UUID_REGEX|[0-9]+|$VARIABLE_KEY_REGEX)"

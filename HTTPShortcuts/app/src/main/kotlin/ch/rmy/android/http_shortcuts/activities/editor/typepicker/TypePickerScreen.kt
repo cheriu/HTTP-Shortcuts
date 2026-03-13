@@ -33,6 +33,7 @@ fun TypePickerScreen(
         TypePickerContent(
             onShortcutTypeSelected = viewModel::onCreationDialogOptionSelected,
             onCurlImportSelected = viewModel::onCurlImportOptionSelected,
+            onCloudflareSelected = viewModel::onCloudflareOptionSelected,
         )
     }
 }

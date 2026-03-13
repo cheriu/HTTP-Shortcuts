@@ -34,6 +34,7 @@ import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType
 fun TypePickerContent(
     onShortcutTypeSelected: (ShortcutExecutionType) -> Unit,
     onCurlImportSelected: () -> Unit,
+    onCloudflareSelected: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -118,6 +119,13 @@ fun TypePickerContent(
                     onShortcutTypeSelected(ShortcutExecutionType.SCRIPTING)
                 },
             )
+
+            Option(
+                label = stringResource(R.string.button_create_cloudflare_shortcut),
+                description = stringResource(R.string.button_description_create_cloudflare_shortcut),
+                icon = painterResource(R.drawable.outline_cloud_download_24),
+                onClick = onCloudflareSelected,
+            )
         }
     }
 }
@@ -182,5 +190,6 @@ private fun TypePickerContent_Preview() {
     TypePickerContent(
         onShortcutTypeSelected = {},
         onCurlImportSelected = {},
+        onCloudflareSelected = {},
     )
 }

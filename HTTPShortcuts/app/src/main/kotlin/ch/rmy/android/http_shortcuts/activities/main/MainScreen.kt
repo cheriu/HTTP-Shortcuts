@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.SavedStateHandle
 import ch.rmy.android.http_shortcuts.R
+import ch.rmy.android.http_shortcuts.activities.cloudflare_config.CloudflareConfig
 import ch.rmy.android.http_shortcuts.components.FloatingAddButton
 import ch.rmy.android.http_shortcuts.components.SimpleScaffold
 import ch.rmy.android.http_shortcuts.components.ToolbarIcon
@@ -70,6 +71,11 @@ fun MainScreen(
             is CurlCommand -> {
                 viewModel.onCurlCommandSubmitted(result)
             }
+
+            is CloudflareConfig -> {
+                viewModel.onCloudflareConfigSubmitted(result)
+            }
+
             is NavigationDestination.ShortcutEditor.ShortcutCreatedResult -> {
                 viewModel.onShortcutCreated(result.shortcutId)
             }

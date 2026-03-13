@@ -10,6 +10,7 @@ import ch.rmy.android.http_shortcuts.data.models.RequestHeader
 import ch.rmy.android.http_shortcuts.data.models.RequestParameter
 import ch.rmy.android.http_shortcuts.data.models.Shortcut
 import ch.rmy.android.http_shortcuts.extensions.getGlobalVariables
+import ch.rmy.android.http_shortcuts.utils.NetworkUtil
 import ch.rmy.android.http_shortcuts.variables.types.VariableTypeFactory
 import javax.inject.Inject
 
@@ -17,18 +18,39 @@ class VariableResolver
 @Inject
 constructor(
     private val variableTypeFactory: VariableTypeFactory,
+    private val networkUtil: NetworkUtil,
 ) {
     suspend fun resolve(
         variableManager: VariableManager,
         variableKeysOrIds: Set<VariableKeyOrId>,
         dialogHandle: DialogHandle,
     ) {
+        resolveBuiltInLocalVariables(variableManager, variableKeysOrIds)
+
         val globalVariableIds = variableKeysOrIds.getGlobalVariables(variableManager)
         variableManager.globalVariables
             .filter { it.id in globalVariableIds }
             .forEach { globalVariable ->
                 resolveGlobalVariable(variableManager, globalVariable, dialogHandle)
             }
+    }
+
+    private fun resolveBuiltInLocalVariables(
+        variableManager: VariableManager,
+        variableKeysOrIds: Set<VariableKeyOrId>,
+    ) {
+        if (VariableKeyOrId(Variables.IPV4_ADDR_VARIABLE_KEY) in variableKeysOrIds) {
+            networkUtil.getIPV4RouteAddress()
+                ?.let { ipv4Address ->
+                    variableManager.setVariableValueByKeyOrId(VariableKeyOrId(Variables.IPV4_ADDR_VARIABLE_KEY), ipv4Address)
+                }
+        }
+        if (VariableKeyOrId(Variables.IPV6_ADDR_VARIABLE_KEY) in variableKeysOrIds) {
+            networkUtil.getIPV6RouteAddress()
+                ?.let { ipv6Address ->
+                    variableManager.setVariableValueByKeyOrId(VariableKeyOrId(Variables.IPV6_ADDR_VARIABLE_KEY), ipv6Address)
+                }
+        }
     }
 
     private suspend fun resolveGlobalVariable(

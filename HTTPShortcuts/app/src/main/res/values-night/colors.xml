@@ -4,6 +4,8 @@
     <item name="primary_dark" type="color">#FFFFFFFF</item>
     <item name="global_variable" type="color">#acb4e2</item>
     <item name="local_variable" type="color">#E2CAAC</item>
+    <item name="ipv4_addr" type="color">#FFFFD75F</item>
+    <item name="ipv6_addr" type="color">#FFFF87FF</item>
     <item name="textarea_background" type="color">#FF000000</item>
     <item name="splash_background" type="color">#1F1F1F</item>
     <item name="variable_widget_foreground" type="color">#DEDEDE</item>

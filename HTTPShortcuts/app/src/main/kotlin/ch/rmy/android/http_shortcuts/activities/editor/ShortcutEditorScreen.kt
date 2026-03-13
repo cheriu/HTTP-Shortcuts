@@ -27,6 +27,7 @@ fun ShortcutEditorScreen(
     categoryId: CategoryId,
     shortcutId: ShortcutId?,
     curlCommandId: NavigationArgStore.ArgStoreId?,
+    cloudflareConfigId: NavigationArgStore.ArgStoreId?,
     executionType: ShortcutExecutionType?,
     recoveryMode: Boolean,
 ) {
@@ -35,6 +36,7 @@ fun ShortcutEditorScreen(
             categoryId,
             shortcutId,
             curlCommandId,
+            cloudflareConfigId,
             executionType,
             recoveryMode,
         ),

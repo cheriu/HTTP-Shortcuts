@@ -17,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.SavedStateHandle
 import ch.rmy.android.framework.viewmodel.ViewModelEvent
@@ -24,9 +25,11 @@ import ch.rmy.android.http_shortcuts.R
 import ch.rmy.android.http_shortcuts.activities.variables.VariableTypeMappings.getTypeName
 import ch.rmy.android.http_shortcuts.data.domains.variables.VariableKeyOrId
 import ch.rmy.android.http_shortcuts.data.dtos.GlobalVariablePlaceholder
+import ch.rmy.android.http_shortcuts.data.enums.IpVersion
 import ch.rmy.android.http_shortcuts.data.settings.DeviceLocalPreferences
 import ch.rmy.android.http_shortcuts.navigation.NavigationDestination
 import ch.rmy.android.http_shortcuts.navigation.ResultHandler
+import ch.rmy.android.http_shortcuts.utils.NetworkUtil
 import ch.rmy.android.http_shortcuts.variables.Variables
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
@@ -42,6 +45,10 @@ fun VariablePickerDialog(
     onDismissRequested: () -> Unit,
 ) {
     val context = LocalContext.current
+    val ipv4Address = remember(context) { NetworkUtil.getRouteAddress(context, IpVersion.V4) }
+    val ipv6Address = remember(context) { NetworkUtil.getRouteAddress(context, IpVersion.V6) }
+    val ipv4Color = colorResource(R.color.ipv4_addr)
+    val ipv6Color = colorResource(R.color.ipv6_addr)
     var showFirstTimeDialog by rememberSaveable {
         mutableStateOf(!skipFirstTimeDialog && !DeviceLocalPreferences(context).isAwareOfVariablePlaceholders)
     }
@@ -160,6 +167,32 @@ fun VariablePickerDialog(
                     description = stringResource(R.string.dialog_option_subtitle_local_variable),
                     onClick = {
                         localVariableDialogVisible = true
+                    },
+                )
+            }
+
+            item(
+                key = Variables.IPV4_ADDR_VARIABLE_KEY,
+            ) {
+                SelectDialogEntry(
+                    label = stringResource(R.string.dialog_option_label_builtin_ipv4_addr),
+                    description = ipv4Address ?: stringResource(R.string.dialog_option_subtitle_builtin_ipv4_addr),
+                    descriptionColor = ipv4Color,
+                    onClick = {
+                        onVariableSelected(VariableKeyOrId(Variables.IPV4_ADDR_VARIABLE_KEY))
+                    },
+                )
+            }
+
+            item(
+                key = Variables.IPV6_ADDR_VARIABLE_KEY,
+            ) {
+                SelectDialogEntry(
+                    label = stringResource(R.string.dialog_option_label_builtin_ipv6_addr),
+                    description = ipv6Address ?: stringResource(R.string.dialog_option_subtitle_builtin_ipv6_addr),
+                    descriptionColor = ipv6Color,
+                    onClick = {
+                        onVariableSelected(VariableKeyOrId(Variables.IPV6_ADDR_VARIABLE_KEY))
                     },
                 )
             }

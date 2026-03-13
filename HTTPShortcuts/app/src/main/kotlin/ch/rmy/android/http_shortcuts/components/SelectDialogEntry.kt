@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -25,6 +27,7 @@ import ch.rmy.android.http_shortcuts.icons.ShortcutIcon
 fun SelectDialogEntry(
     label: String,
     description: String? = null,
+    descriptionColor: Color = Color.Unspecified,
     checked: Boolean? = null,
     enabled: Boolean = true,
     useRadios: Boolean = false,
@@ -115,6 +118,7 @@ fun SelectDialogEntry(
                 Text(
                     description,
                     fontSize = FontSize.SMALL,
+                    color = if (descriptionColor == Color.Unspecified) LocalContentColor.current else descriptionColor,
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis,
                 )

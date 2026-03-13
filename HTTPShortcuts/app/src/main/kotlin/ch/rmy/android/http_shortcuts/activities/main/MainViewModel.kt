@@ -12,6 +12,7 @@ import ch.rmy.android.framework.utils.localization.StringResLocalizable
 import ch.rmy.android.framework.viewmodel.BaseViewModel
 import ch.rmy.android.framework.viewmodel.ViewModelScope
 import ch.rmy.android.http_shortcuts.R
+import ch.rmy.android.http_shortcuts.activities.cloudflare_config.CloudflareConfig
 import ch.rmy.android.http_shortcuts.activities.main.models.CategoryItem
 import ch.rmy.android.http_shortcuts.activities.main.usecases.ShouldShowChangeLogDialogUseCase
 import ch.rmy.android.http_shortcuts.activities.main.usecases.ShouldShowNetworkRestrictionDialogUseCase
@@ -572,6 +573,17 @@ constructor(
             NavigationDestination.ShortcutEditor.buildRequest(
                 categoryId = viewState.activeCategoryId,
                 curlCommandId = curlCommandId,
+            ),
+        )
+    }
+
+    fun onCloudflareConfigSubmitted(config: CloudflareConfig) = runAction {
+        logInfo("Cloudflare config submitted")
+        val cloudflareConfigId = navigationArgStore.storeArg(config)
+        navigate(
+            NavigationDestination.ShortcutEditor.buildRequest(
+                categoryId = viewState.activeCategoryId,
+                cloudflareConfigId = cloudflareConfigId,
             ),
         )
     }

@@ -13,6 +13,7 @@ import ch.rmy.android.framework.utils.localization.StringResLocalizable
 import ch.rmy.android.framework.viewmodel.BaseViewModel
 import ch.rmy.android.framework.viewmodel.ViewModelScope
 import ch.rmy.android.http_shortcuts.R
+import ch.rmy.android.http_shortcuts.activities.cloudflare_config.CloudflareConfig
 import ch.rmy.android.http_shortcuts.activities.editor.usecases.FetchFaviconUseCase
 import ch.rmy.android.http_shortcuts.activities.execute.ExecuteDialogHandler
 import ch.rmy.android.http_shortcuts.activities.execute.ExecuteDialogState
@@ -121,6 +122,14 @@ constructor(
                 temporaryShortcutRepository.importFromCurl(curlCommand)
             }
 
+        data.cloudflareConfigId
+            ?.let {
+                navigationArgStore.takeArg(it) as CloudflareConfig?
+            }
+            ?.let { config ->
+                temporaryShortcutRepository.applyCloudflareTemplate(config)
+            }
+
         val shortcutFlow = temporaryShortcutRepository.observeTemporaryShortcut()
         this.shortcut = shortcutFlow.awaitNonNull()
         oldShortcut = this.shortcut
@@ -197,7 +206,9 @@ constructor(
     }
 
     private fun hasChanges() =
-        initData.recoveryMode || initData.curlCommandId != null || shortcut != oldShortcut || headers != oldHeaders || parameters != oldParameters
+        initData.recoveryMode || initData.curlCommandId != null || initData.cloudflareConfigId != null || shortcut != oldShortcut ||
+            headers != oldHeaders ||
+            parameters != oldParameters
 
     private fun canExecute() =
         when (shortcut.executionType) {
@@ -662,6 +673,7 @@ constructor(
         val categoryId: CategoryId,
         val shortcutId: ShortcutId?,
         val curlCommandId: NavigationArgStore.ArgStoreId?,
+        val cloudflareConfigId: NavigationArgStore.ArgStoreId? = null,
         val executionType: ShortcutExecutionType?,
         val recoveryMode: Boolean,
     )
