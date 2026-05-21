@@ -84,6 +84,18 @@ constructor(
         }
     }
 
+    suspend fun setAutoUpdateOnIpChange(autoUpdateOnIpChange: Boolean) {
+        updateShortcut {
+            copy(autoUpdateOnIpChange = autoUpdateOnIpChange)
+        }
+    }
+
+    suspend fun setDebounceWindow(duration: Duration? = null) {
+        updateShortcut {
+            copy(debounceWindowMs = duration?.inWholeMilliseconds?.toInt())
+        }
+    }
+
     suspend fun setExcludeFromFileSharingChanged(exclude: Boolean) {
         updateShortcut {
             copy(excludeFromFileSharing = exclude)

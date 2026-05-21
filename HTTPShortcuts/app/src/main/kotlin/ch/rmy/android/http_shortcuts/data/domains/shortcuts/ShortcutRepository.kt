@@ -218,6 +218,7 @@ constructor(
             shortcutDao().deleteShortcutById(shortcutId)
             requestHeaderDao().deleteRequestHeaderByShortcutId(shortcutId)
             requestParameterDao().deleteRequestParametersByShortcutId(shortcutId)
+            shortcutSyncStateDao().deleteByShortcutId(shortcutId)
         }
     }
 

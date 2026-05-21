@@ -79,6 +79,10 @@ data class Shortcut(
     val delay: Int,
     @ColumnInfo(name = "repetition_interval")
     val repetitionInterval: Int?,
+    @ColumnInfo(name = "auto_update_on_ip_change", defaultValue = "0")
+    val autoUpdateOnIpChange: Boolean,
+    @ColumnInfo(name = "debounce_window_ms")
+    val debounceWindowMs: Int?,
     @ColumnInfo(name = "content_type")
     val contentType: String,
     @ColumnInfo(name = "file_upload_type")
@@ -239,6 +243,8 @@ data class Shortcut(
                 quickSettingsTileShortcut = false,
                 delay = 0,
                 repetitionInterval = null,
+                autoUpdateOnIpChange = false,
+                debounceWindowMs = null,
                 contentType = "",
                 fileUploadType = null,
                 fileUploadSourceDirectoryId = null,

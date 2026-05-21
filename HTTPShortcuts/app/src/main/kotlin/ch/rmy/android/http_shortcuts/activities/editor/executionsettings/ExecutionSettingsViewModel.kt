@@ -11,6 +11,7 @@ import ch.rmy.android.http_shortcuts.data.models.Shortcut.Companion.TEMPORARY_ID
 import ch.rmy.android.http_shortcuts.data.settings.DeviceLocalPreferences
 import ch.rmy.android.http_shortcuts.extensions.canUseFiles
 import ch.rmy.android.http_shortcuts.extensions.canWaitForConnection
+import ch.rmy.android.http_shortcuts.extensions.isHttpShortcut
 import ch.rmy.android.http_shortcuts.utils.AppOverlayUtil
 import ch.rmy.android.http_shortcuts.utils.BiometricUtil
 import ch.rmy.android.http_shortcuts.utils.LauncherShortcutManager
@@ -52,6 +53,9 @@ constructor(
             directShareOptionVisible = launcherShortcutManager.supportsDirectShare(),
             waitForConnection = shortcut.isWaitForNetwork,
             waitForConnectionOptionVisible = shortcut.executionType.canWaitForConnection,
+            autoUpdateOnIpChange = shortcut.autoUpdateOnIpChange,
+            autoUpdateOnIpChangeOptionVisible = shortcut.executionType.isHttpShortcut,
+            debounceWindowMs = shortcut.debounceWindowMs,
             launcherShortcut = shortcut.launcherShortcut,
             secondaryLauncherShortcut = shortcut.secondaryLauncherShortcut,
             quickSettingsTileShortcut = shortcut.quickSettingsTileShortcut,
@@ -72,6 +76,24 @@ constructor(
         }
         withProgressTracking {
             temporaryShortcutRepository.setWaitForConnection(waitForConnection)
+        }
+    }
+
+    fun onAutoUpdateOnIpChangeChanged(autoUpdateOnIpChange: Boolean) = runAction {
+        updateViewState {
+            copy(autoUpdateOnIpChange = autoUpdateOnIpChange)
+        }
+        withProgressTracking {
+            temporaryShortcutRepository.setAutoUpdateOnIpChange(autoUpdateOnIpChange)
+        }
+    }
+
+    fun onDebounceWindowChanged(debounceWindowMs: Int?) = runAction {
+        updateViewState {
+            copy(debounceWindowMs = debounceWindowMs)
+        }
+        withProgressTracking {
+            temporaryShortcutRepository.setDebounceWindow(debounceWindowMs?.milliseconds)
         }
     }
 

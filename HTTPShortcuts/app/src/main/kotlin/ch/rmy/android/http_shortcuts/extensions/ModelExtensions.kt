@@ -8,16 +8,22 @@ import ch.rmy.android.framework.extensions.takeUnlessEmpty
 import ch.rmy.android.http_shortcuts.R
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.ShortcutId
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.ShortcutRepository
+import ch.rmy.android.http_shortcuts.data.domains.variables.VariableKeyOrId
 import ch.rmy.android.http_shortcuts.data.dtos.GlobalVariablePlaceholder
 import ch.rmy.android.http_shortcuts.data.dtos.ShortcutPlaceholder
+import ch.rmy.android.http_shortcuts.data.enums.IpVersion
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType
 import ch.rmy.android.http_shortcuts.data.models.Category
 import ch.rmy.android.http_shortcuts.data.models.CertificatePin as CertificatePinModel
 import ch.rmy.android.http_shortcuts.data.models.GlobalVariable
+import ch.rmy.android.http_shortcuts.data.models.RequestHeader
+import ch.rmy.android.http_shortcuts.data.models.RequestParameter
 import ch.rmy.android.http_shortcuts.data.models.Section
 import ch.rmy.android.http_shortcuts.data.models.Shortcut
 import ch.rmy.android.http_shortcuts.data.models.ShortcutWidget
 import ch.rmy.android.http_shortcuts.http.CertificatePin as HttpCertificatePin
+import ch.rmy.android.http_shortcuts.variables.VariableResolver
+import ch.rmy.android.http_shortcuts.variables.Variables
 
 @JvmName(name = "shortcutIds")
 fun List<Shortcut>.ids() = map { it.id }
@@ -50,6 +56,25 @@ val Shortcut.isTemporaryShortcut
 
 fun Shortcut.shouldIncludeInHistory() =
     !excludeFromHistory && !isTemporaryShortcut
+
+val Shortcut.canAutoUpdateOnIpChange: Boolean
+    get() = executionType.isHttpShortcut && autoUpdateOnIpChange
+
+fun Shortcut.getAutoUpdateIpVersions(headers: List<RequestHeader>, parameters: List<RequestParameter>): Set<IpVersion> {
+    val identifiers = VariableResolver.findResolvableVariableIdentifiersExcludingScripting(
+        shortcut = this,
+        headers = headers,
+        parameters = parameters,
+    )
+    return buildSet {
+        if (VariableKeyOrId(Variables.IPV4_ADDR_VARIABLE_KEY) in identifiers) {
+            add(IpVersion.V4)
+        }
+        if (VariableKeyOrId(Variables.IPV6_ADDR_VARIABLE_KEY) in identifiers) {
+            add(IpVersion.V6)
+        }
+    }
+}
 
 fun GlobalVariable.toVariablePlaceholder() =
     GlobalVariablePlaceholder(

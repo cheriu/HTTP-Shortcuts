@@ -13,6 +13,7 @@ import ch.rmy.android.http_shortcuts.data.domains.pending_executions.PendingExec
 import ch.rmy.android.http_shortcuts.data.domains.request_headers.RequestHeaderDao
 import ch.rmy.android.http_shortcuts.data.domains.request_parameters.RequestParameterDao
 import ch.rmy.android.http_shortcuts.data.domains.sections.SectionDao
+import ch.rmy.android.http_shortcuts.data.domains.shortcut_sync_state.ShortcutSyncStateDao
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.ShortcutDao
 import ch.rmy.android.http_shortcuts.data.domains.sync.SyncDao
 import ch.rmy.android.http_shortcuts.data.domains.variables.GlobalVariableDao
@@ -32,6 +33,7 @@ import ch.rmy.android.http_shortcuts.data.models.RequestParameter
 import ch.rmy.android.http_shortcuts.data.models.ResolvedVariableModel
 import ch.rmy.android.http_shortcuts.data.models.Section
 import ch.rmy.android.http_shortcuts.data.models.Shortcut
+import ch.rmy.android.http_shortcuts.data.models.ShortcutSyncState
 import ch.rmy.android.http_shortcuts.data.models.ShortcutWidget
 import ch.rmy.android.http_shortcuts.data.models.SyncConfig
 import ch.rmy.android.http_shortcuts.data.models.VariableWidget
@@ -51,12 +53,13 @@ import ch.rmy.android.http_shortcuts.data.models.WorkingDirectory
         ResolvedVariableModel::class,
         Section::class,
         Shortcut::class,
+        ShortcutSyncState::class,
         ShortcutWidget::class,
         SyncConfig::class,
         VariableWidget::class,
         WorkingDirectory::class,
     ],
-    version = 10,
+    version = 11,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 3),
@@ -67,6 +70,7 @@ import ch.rmy.android.http_shortcuts.data.models.WorkingDirectory
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 10, to = 11),
     ],
     exportSchema = true,
 )
@@ -83,6 +87,7 @@ abstract class Database : RoomDatabase() {
     abstract fun requestParameterDao(): RequestParameterDao
     abstract fun sectionDao(): SectionDao
     abstract fun shortcutDao(): ShortcutDao
+    abstract fun shortcutSyncStateDao(): ShortcutSyncStateDao
     abstract fun shortcutWidgetDao(): ShortcutWidgetDao
     abstract fun syncDao(): SyncDao
     abstract fun variableWidgetDao(): VariableWidgetDao

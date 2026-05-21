@@ -191,11 +191,13 @@ fun ShortcutEditorContent(
             )
         }
 
-        SettingsButton(
-            title = stringResource(R.string.label_execution_settings),
-            subtitle = stringResource(R.string.label_execution_settings_subtitle),
-            onClick = onExecutionSettingsButtonClicked,
-        )
+        if (shortcutExecutionType.isHttpShortcut) {
+            SettingsButton(
+                title = stringResource(R.string.label_execution_settings),
+                subtitle = stringResource(R.string.label_execution_settings_subtitle),
+                onClick = onExecutionSettingsButtonClicked,
+            )
+        }
 
         if (shortcutExecutionType == ShortcutExecutionType.HTTP || shortcutExecutionType == ShortcutExecutionType.MQTT) {
             SettingsButton(

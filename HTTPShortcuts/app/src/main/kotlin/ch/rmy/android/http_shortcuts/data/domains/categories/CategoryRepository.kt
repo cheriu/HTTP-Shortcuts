@@ -86,6 +86,7 @@ constructor(
         sectionDao().deleteSectionsByCategoryId(categoryId)
         requestHeaderDao().deleteRequestHeadersByShortcutIds(shortcutIds)
         requestParameterDao().deleteRequestParametersByShortcutIds(shortcutIds)
+        shortcutSyncStateDao().deleteByShortcutIds(shortcutIds)
     }
 
     suspend fun updateCategory(

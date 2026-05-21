@@ -24,6 +24,7 @@ import ch.rmy.android.http_shortcuts.components.VerticalSpacer
 import ch.rmy.android.http_shortcuts.data.enums.ConfirmationType
 import ch.rmy.android.http_shortcuts.extensions.localize
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -32,6 +33,9 @@ fun ExecutionSettingsContent(
     delay: Duration,
     waitForConnection: Boolean,
     waitForConnectionOptionVisible: Boolean,
+    autoUpdateOnIpChange: Boolean,
+    autoUpdateOnIpChangeOptionVisible: Boolean,
+    debounceWindowMs: Int?,
     confirmationType: ConfirmationType?,
     directShareOptionVisible: Boolean,
     launcherShortcut: Boolean,
@@ -50,6 +54,8 @@ fun ExecutionSettingsContent(
     onExcludeFromHistoryChanged: (Boolean) -> Unit,
     onConfirmationTypeChanged: (ConfirmationType?) -> Unit,
     onWaitForConnectionChanged: (Boolean) -> Unit,
+    onAutoUpdateOnIpChangeChanged: (Boolean) -> Unit,
+    onDebounceWindowChanged: (Int?) -> Unit,
     onDelayButtonClicked: () -> Unit,
     onRepetitionIntervalChanged: (Int?) -> Unit,
     onExcludeFromFileSharingChanged: (Boolean) -> Unit,
@@ -131,6 +137,33 @@ fun ExecutionSettingsContent(
                 checked = waitForConnection,
                 onCheckedChange = onWaitForConnectionChanged,
             )
+        }
+
+        if (autoUpdateOnIpChangeOptionVisible) {
+            Checkbox(
+                label = stringResource(R.string.label_auto_update_on_ip_change),
+                checked = autoUpdateOnIpChange,
+                onCheckedChange = onAutoUpdateOnIpChangeChanged,
+            )
+
+            AnimatedVisibility(visible = autoUpdateOnIpChange) {
+                Column(
+                    modifier = Modifier.padding(Spacing.MEDIUM),
+                ) {
+                    HelpText(
+                        text = stringResource(R.string.instructions_auto_update_on_ip_change),
+                    )
+
+                    VerticalSpacer(Spacing.MEDIUM)
+
+                    SelectionField(
+                        title = stringResource(R.string.label_ip_change_debounce_window),
+                        selectedKey = debounceWindowMs,
+                        items = DEBOUNCE_WINDOW_TYPES.map { (value, label) -> value to label.localize() },
+                        onItemSelected = onDebounceWindowChanged,
+                    )
+                }
+            }
         }
 
         SettingsButton(
@@ -217,6 +250,9 @@ private fun ExecutionSettingsContent_Preview() {
         delay = 0.seconds,
         waitForConnection = false,
         waitForConnectionOptionVisible = false,
+        autoUpdateOnIpChange = false,
+        autoUpdateOnIpChangeOptionVisible = true,
+        debounceWindowMs = null,
         confirmationType = null,
         directShareOptionVisible = true,
         launcherShortcut = true,
@@ -235,8 +271,24 @@ private fun ExecutionSettingsContent_Preview() {
         onExcludeFromHistoryChanged = {},
         onConfirmationTypeChanged = {},
         onWaitForConnectionChanged = {},
+        onAutoUpdateOnIpChangeChanged = {},
+        onDebounceWindowChanged = {},
         onDelayButtonClicked = {},
         onRepetitionIntervalChanged = {},
         onExcludeFromFileSharingChanged = {},
     )
 }
+
+private val DEBOUNCE_WINDOW_TYPES = listOf(null to StringResLocalizable(R.string.label_no_debounce))
+    .plus(
+        listOf(5, 10, 30)
+            .map {
+                (it * 1000) to DurationLocalizable(it.seconds)
+            },
+    )
+    .plus(
+        listOf(1, 5)
+            .map {
+                (it * 60 * 1000) to DurationLocalizable(it.minutes)
+            },
+    )

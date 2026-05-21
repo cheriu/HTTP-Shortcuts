@@ -70,6 +70,7 @@ constructor(
             shortcutDao().deleteAllShortcuts()
             requestHeaderDao().deleteAllRequestHeaders()
             requestParameterDao().deleteAllRequestParameters()
+            shortcutSyncStateDao().deleteAll()
             globalVariableDao().deleteAll()
             certificatePinDao().deleteAllCertificatePins()
             workingDirectoryDao().deleteAllWorkingDirectories()
@@ -256,6 +257,8 @@ constructor(
                 quickSettingsTileShortcut = shortcut.quickSettingsTileShortcut == true,
                 delay = shortcut.delay ?: 0,
                 repetitionInterval = shortcut.repetitionInterval?.takeIf { it > 0 },
+                autoUpdateOnIpChange = shortcut.autoUpdateOnIpChange == true,
+                debounceWindowMs = shortcut.debounceWindowMs,
                 contentType = shortcut.contentType ?: "",
                 fileUploadType = shortcut.fileUploadOptions
                     ?.fileUploadType
