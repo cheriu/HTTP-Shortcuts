@@ -35,6 +35,7 @@ data class ImportExportShortcut(
     val repetitionInterval: Int? = null,
     val autoUpdateOnIpChange: Boolean? = null,
     val debounceWindowMs: Int? = null,
+    val networkPreference: String? = null,
     val requestBodyType: String? = null,
     val contentType: String? = null,
     val responseHandling: ImportExportResponseHandling? = null,

@@ -13,6 +13,7 @@ import ch.rmy.android.http_shortcuts.data.enums.ConfirmationType
 import ch.rmy.android.http_shortcuts.data.enums.FileUploadType
 import ch.rmy.android.http_shortcuts.data.enums.HttpMethod
 import ch.rmy.android.http_shortcuts.data.enums.IpVersion
+import ch.rmy.android.http_shortcuts.data.enums.NetworkPreference
 import ch.rmy.android.http_shortcuts.data.enums.ParameterType
 import ch.rmy.android.http_shortcuts.data.enums.ProxyType
 import ch.rmy.android.http_shortcuts.data.enums.RequestBodyType
@@ -93,6 +94,12 @@ constructor(
     suspend fun setDebounceWindow(duration: Duration? = null) {
         updateShortcut {
             copy(debounceWindowMs = duration?.inWholeMilliseconds?.toInt())
+        }
+    }
+
+    suspend fun setNetworkPreference(networkPreference: NetworkPreference?) {
+        updateShortcut {
+            copy(networkPreference = networkPreference)
         }
     }
 

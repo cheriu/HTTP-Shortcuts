@@ -755,6 +755,12 @@
     <string name="instructions_auto_update_on_ip_change">The shortcut will run in the background when the current routed IP address changes. Add the ipv4Addr or ipv6Addr variable to the shortcut to choose which address to monitor.</string>
     <string name="label_ip_change_debounce_window">IP change debounce window</string>
     <string name="label_no_debounce">No debounce</string>
+    <string name="label_network_preference">Network Preference</string>
+    <string name="option_network_default">Use system default</string>
+    <string name="option_network_prefer_cellular">Prefer mobile data</string>
+    <string name="option_network_only_cellular">Mobile data only</string>
+    <string name="option_network_prefer_wifi">Prefer Wi-Fi</string>
+    <string name="option_network_only_wifi">Wi-Fi only</string>
     <!-- error message displayed when something goes wrong (e.g. response too big) when trying to share/export a response/text -->
     <string name="error_share_failed">An error occurred while sharing.</string>
     <!-- Generic error shown when an action fails because the device does not support it, e.g. importing from another app -->
