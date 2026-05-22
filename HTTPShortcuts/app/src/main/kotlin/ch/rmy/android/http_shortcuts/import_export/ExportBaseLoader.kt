@@ -171,6 +171,7 @@ constructor(
                                 repetitionInterval = shortcut.repetitionInterval,
                                 autoUpdateOnIpChange = shortcut.takeIf { type == HTTP }?.autoUpdateOnIpChange?.trueOrNull(),
                                 debounceWindowMs = shortcut.takeIf { type == HTTP }?.debounceWindowMs,
+                                networkPreference = shortcut.takeIf { type == HTTP }?.networkPreference?.key,
                                 requestBodyType = shortcut.takeIf { type == HTTP }
                                     ?.requestBodyType
                                     ?.takeIf { it != RequestBodyType.CUSTOM_TEXT }?.type,
