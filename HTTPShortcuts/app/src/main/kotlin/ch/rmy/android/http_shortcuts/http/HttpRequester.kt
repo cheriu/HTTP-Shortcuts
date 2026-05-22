@@ -96,6 +96,8 @@ constructor(
 
             val cookieJar = if (useCookieJar) cookieManager.getCookieJar() else null
 
+            val network = shortcut.networkPreference?.let { getNetworkForPreference(context, it) }
+
             try {
                 makeRequest(
                     context = context,
@@ -109,6 +111,7 @@ constructor(
                     cookieJar = cookieJar,
                     certificatePins = certificatePins,
                     progressTracker = progressTracker,
+                    network = network,
                 )
             } catch (e: UnknownHostException) {
                 ensureActive()
@@ -138,6 +141,7 @@ constructor(
                         cookieJar = cookieJar,
                         certificatePins = certificatePins,
                         progressTracker = progressTracker,
+                        network = network,
                     )
                 } else {
                     throw e
@@ -232,23 +236,6 @@ constructor(
         responseFileStorage: ResponseFileStorage,
         fileUploadResult: FileUploadManager.Result? = null,
         cookieJar: CookieJar? = null,
-        certificatePins: List<CertificatePin>,
-        progressTracker: ProgressTracker?,
-    ): ShortcutResponse {
-        val network = shortcut.networkPreference?.let { getNetworkForPreference(context, it) }
-        return makeRequestInternal(context, shortcut, headers, parameters, variablesValues, requestData, responseFileStorage, fileUploadResult, cookieJar, certificatePins, progressTracker, network)
-    }
-
-    private suspend fun makeRequestInternal(
-        context: Context,
-        shortcut: Shortcut,
-        headers: List<RequestHeader>,
-        parameters: List<RequestParameter>,
-        variablesValues: ResolvedVariableValues,
-        requestData: RequestData,
-        responseFileStorage: ResponseFileStorage,
-        fileUploadResult: FileUploadManager.Result?,
-        cookieJar: CookieJar?,
         certificatePins: List<CertificatePin>,
         progressTracker: ProgressTracker?,
         network: Network?,
