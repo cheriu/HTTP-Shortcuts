@@ -62,6 +62,10 @@ constructor(
         navigate(NavigationDestination.History)
     }
 
+    fun onNetworkInterfacesClicked() = runAction {
+        navigate(NavigationDestination.NetworkInterfaces)
+    }
+
     fun onAllowOverlayButtonClicked() = runAction {
         sendIntent(appOverlayUtil.getSettingsIntent())
     }

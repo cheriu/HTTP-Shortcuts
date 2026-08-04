@@ -22,6 +22,7 @@ fun TroubleShootingContent(
     onEventHistoryClicked: () -> Unit,
     onClearCookiesButtonClicked: () -> Unit,
     onCancelAllPendingExecutionsButtonClicked: () -> Unit,
+    onNetworkInterfacesClicked: () -> Unit,
     onAllowOverlayButtonClicked: () -> Unit,
     onAllowXiaomiOverlayButtonClicked: () -> Unit,
     onBatteryOptimizationButtonClicked: () -> Unit,
@@ -50,6 +51,13 @@ fun TroubleShootingContent(
             icon = painterResource(R.drawable.outline_schedule_24),
             title = stringResource(R.string.settings_cancel_all_pending_executions),
             onClick = onCancelAllPendingExecutionsButtonClicked,
+        )
+
+        SettingsButton(
+            icon = painterResource(R.drawable.outline_network_node_24),
+            title = stringResource(R.string.settings_network_interfaces),
+            subtitle = stringResource(R.string.settings_network_interfaces_summary),
+            onClick = onNetworkInterfacesClicked,
         )
 
         SettingsButton(

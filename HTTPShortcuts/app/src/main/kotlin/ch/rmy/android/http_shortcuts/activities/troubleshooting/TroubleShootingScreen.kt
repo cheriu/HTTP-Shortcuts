@@ -21,6 +21,7 @@ fun TroubleShootingScreen() {
             onEventHistoryClicked = viewModel::onEventHistoryClicked,
             onClearCookiesButtonClicked = viewModel::onClearCookiesButtonClicked,
             onCancelAllPendingExecutionsButtonClicked = viewModel::onCancelAllPendingExecutionsButtonClicked,
+            onNetworkInterfacesClicked = viewModel::onNetworkInterfacesClicked,
             onAllowOverlayButtonClicked = viewModel::onAllowOverlayButtonClicked,
             onAllowXiaomiOverlayButtonClicked = viewModel::onAllowXiaomiOverlayButtonClicked,
             onBatteryOptimizationButtonClicked = viewModel::onBatteryOptimizationButtonClicked,

@@ -36,6 +36,7 @@ import ch.rmy.android.http_shortcuts.activities.importexport.ImportExportScreen
 import ch.rmy.android.http_shortcuts.activities.main.MainActivity
 import ch.rmy.android.http_shortcuts.activities.main.MainScreen
 import ch.rmy.android.http_shortcuts.activities.moving.MoveScreen
+import ch.rmy.android.http_shortcuts.activities.networkinterfaces.NetworkInterfacesScreen
 import ch.rmy.android.http_shortcuts.activities.remote_edit.RemoteEditScreen
 import ch.rmy.android.http_shortcuts.activities.settings.SettingsScreen
 import ch.rmy.android.http_shortcuts.activities.shortcutwidget.ShortcutWidgetSettingsScreen
@@ -259,6 +260,10 @@ fun NavigationRoot(navController: NavHostController) {
 
         composable(NavigationDestination.TroubleShooting) {
             TroubleShootingScreen()
+        }
+
+        composable(NavigationDestination.NetworkInterfaces) {
+            NetworkInterfacesScreen()
         }
 
         composable(NavigationDestination.GlobalVariables) { backStackEntry ->

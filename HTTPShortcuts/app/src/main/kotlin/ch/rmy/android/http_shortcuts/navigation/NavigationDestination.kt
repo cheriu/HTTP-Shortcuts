@@ -427,6 +427,10 @@ sealed interface NavigationDestination {
         override val path = "troubleShooting"
     }
 
+    object NetworkInterfaces : NoArgNavigationDestination {
+        override val path = "networkInterfaces"
+    }
+
     object GlobalVariables : NavigationDestination {
         private const val ARG_AS_PICKER = "asPicker"
         override val path = "globalVariables"

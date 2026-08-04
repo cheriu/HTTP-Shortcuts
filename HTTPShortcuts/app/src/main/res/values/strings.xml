@@ -393,6 +393,32 @@
     <string name="settings_documentation">Documentation</string>
     <!-- Subtitle of option in settings screen: links the user to an external documentation page -->
     <string name="settings_documentation_summary">FAQ, references, examples, …</string>
+    <!-- Name of button in troubleshooting screen that opens the network interfaces screen -->
+    <string name="settings_network_interfaces">Network Interfaces</string>
+    <!-- Subtitle of button in troubleshooting screen that opens the network interfaces screen -->
+    <string name="settings_network_interfaces_summary">View details about the device\'s network interfaces and connectivity</string>
+    <!-- Title of the network interfaces screen -->
+    <string name="title_network_interfaces">Network Interfaces</string>
+    <!-- Label for the active network section on the network interfaces screen -->
+    <string name="label_network_interface_active">Active Network</string>
+    <!-- Label indicating a network interface is up -->
+    <string name="label_network_interface_up">Up</string>
+    <!-- Label indicating a network interface is down -->
+    <string name="label_network_interface_down">Down</string>
+    <!-- Label for the MAC address of a network interface -->
+    <string name="label_network_interface_mac_address">MAC Address</string>
+    <!-- Label for the MTU of a network interface -->
+    <string name="label_network_interface_mtu">MTU</string>
+    <!-- Label for the IP addresses of a network interface -->
+    <string name="label_network_interface_addresses">Addresses</string>
+    <!-- Label for the transport types of the active network -->
+    <string name="label_network_interface_transports">Transports</string>
+    <!-- Label for the gateway of the active network -->
+    <string name="label_network_interface_gateway">Gateway</string>
+    <!-- Label for the DNS servers of the active network -->
+    <string name="label_network_interface_dns">DNS Servers</string>
+    <!-- Content description for the refresh button -->
+    <string name="action_refresh">Refresh</string>
     <!-- Message, shown in snackbar, confirming to user that a shortcut was duplicated. %1$s is a placeholder for the shortcut's name -->
     <string name="shortcut_duplicated">\“%1$s\” duplicated.</string>
     <!-- Message, shown in snackbar, confirming to user that a shortcut was deleted. %1$s is a placeholder for the shortcut's name -->
