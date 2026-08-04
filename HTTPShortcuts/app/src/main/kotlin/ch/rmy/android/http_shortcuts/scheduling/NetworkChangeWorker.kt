@@ -1,18 +1,15 @@
 package ch.rmy.android.http_shortcuts.scheduling
 
 import android.content.Context
-import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.rmy.android.framework.extensions.logInfo
-import ch.rmy.android.framework.extensions.runIf
 import ch.rmy.android.framework.extensions.tryOrLog
 import ch.rmy.android.http_shortcuts.activities.execute.ExecutionStarter
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.ShortcutRepository
@@ -68,9 +65,6 @@ constructor(
                     ExistingWorkPolicy.REPLACE,
                     OneTimeWorkRequestBuilder<NetworkChangeWorker>()
                         .setInitialDelay(DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS)
-                        .runIf(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                        }
                         .build(),
                 )
         }
