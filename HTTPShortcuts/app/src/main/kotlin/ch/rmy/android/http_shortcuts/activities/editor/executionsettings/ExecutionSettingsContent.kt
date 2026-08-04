@@ -39,7 +39,6 @@ fun ExecutionSettingsContent(
     quickSettingsTileShortcut: Boolean,
     excludeFromHistory: Boolean,
     triggerOnNetworkChange: Boolean,
-    triggerOnNetworkChangeOptionVisible: Boolean,
     repetitionInterval: Int?,
     canUseBiometrics: Boolean,
     excludeFromFileSharing: Boolean,
@@ -164,22 +163,20 @@ fun ExecutionSettingsContent(
 
         HorizontalDivider()
 
-        if (triggerOnNetworkChangeOptionVisible) {
-            Checkbox(
-                label = stringResource(R.string.label_trigger_on_network_change),
-                checked = triggerOnNetworkChange,
-                onCheckedChange = onTriggerOnNetworkChangeChanged,
+        Checkbox(
+            label = stringResource(R.string.label_trigger_on_network_change),
+            checked = triggerOnNetworkChange,
+            onCheckedChange = onTriggerOnNetworkChangeChanged,
+        )
+
+        AnimatedVisibility(visible = triggerOnNetworkChange) {
+            HelpText(
+                text = stringResource(R.string.instructions_trigger_on_network_change),
+                modifier = Modifier.padding(top = Spacing.SMALL),
             )
-
-            AnimatedVisibility(visible = triggerOnNetworkChange) {
-                HelpText(
-                    text = stringResource(R.string.instructions_trigger_on_network_change),
-                    modifier = Modifier.padding(top = Spacing.SMALL),
-                )
-            }
-
-            HorizontalDivider()
         }
+
+        HorizontalDivider()
 
         Checkbox(
             label = stringResource(R.string.label_exclude_from_history),
@@ -244,7 +241,6 @@ private fun ExecutionSettingsContent_Preview() {
         quickSettingsTileShortcut = false,
         excludeFromHistory = false,
         triggerOnNetworkChange = false,
-        triggerOnNetworkChangeOptionVisible = false,
         repetitionInterval = 0,
         canUseBiometrics = false,
         excludeFromFileSharing = false,

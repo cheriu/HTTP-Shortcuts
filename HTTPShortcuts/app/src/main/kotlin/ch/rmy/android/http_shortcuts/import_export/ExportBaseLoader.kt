@@ -30,7 +30,6 @@ import ch.rmy.android.http_shortcuts.data.enums.ShortcutAuthenticationType.DIGES
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType.BROWSER
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType.HTTP
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType.MQTT
-import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType.TRIGGER
 import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType.WAKE_ON_LAN
 import ch.rmy.android.http_shortcuts.data.enums.VariableType
 import ch.rmy.android.http_shortcuts.data.settings.DeviceLocalPreferences
@@ -269,9 +268,7 @@ constructor(
                                     ?.targetBrowser
                                     ?.serialize(),
                                 excludeFromHistory = shortcut.excludeFromHistory.trueOrNull(),
-                                triggerOnNetworkChange = shortcut.takeIf { type == TRIGGER }
-                                    ?.triggerOnNetworkChange
-                                    ?.trueOrNull(),
+                                triggerOnNetworkChange = shortcut.triggerOnNetworkChange.trueOrNull(),
                                 excludeFromFileSharing = shortcut.excludeFromFileSharing.trueOrNull(),
                                 runInForegroundService = shortcut.runInForegroundService.trueOrNull(),
                                 wolMacAddress = shortcut.takeIf { type == WAKE_ON_LAN }

@@ -45,7 +45,7 @@ constructor(
             }
 
             logInfo("Network state changed, triggering shortcuts")
-            shortcutRepository.getTriggerShortcutsThatTriggerOnNetworkChange()
+            shortcutRepository.getShortcutsThatTriggerOnNetworkChange()
                 .forEach { shortcut ->
                     executionStarter.execute(shortcut.id, ShortcutTriggerType.NETWORK_CHANGE)
                 }

@@ -53,7 +53,6 @@ fun ExecutionSettingsScreen() {
             quickSettingsTileShortcut = viewState.quickSettingsTileShortcut,
             excludeFromHistory = viewState.excludeFromHistory,
             triggerOnNetworkChange = viewState.triggerOnNetworkChange,
-            triggerOnNetworkChangeOptionVisible = viewState.triggerOnNetworkChangeOptionVisible,
             repetitionInterval = viewState.repetitionInterval,
             canUseBiometrics = viewState.canUseBiometrics,
             excludeFromFileSharing = viewState.excludeFromFileSharing,
