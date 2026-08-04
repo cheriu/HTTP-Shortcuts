@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.LinkProperties
 import android.net.Network
-import android.net.NetworkRequest
 import androidx.core.content.getSystemService
 import ch.rmy.android.framework.extensions.tryOrLog
 import javax.inject.Inject
@@ -44,7 +43,7 @@ constructor(
 
         val connectivityManager = connectivityManager ?: return
         tryOrLog {
-            connectivityManager.registerNetworkCallback(NetworkRequest.Builder().build(), callback)
+            connectivityManager.registerDefaultNetworkCallback(callback)
             starter.scheduleRepeating()
             started = true
         }

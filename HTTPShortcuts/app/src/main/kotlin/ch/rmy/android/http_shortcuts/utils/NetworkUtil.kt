@@ -45,38 +45,46 @@ constructor(
             ?.let(::formatIPV4Address)
 
     /**
-     * Returns a deterministic fingerprint of the IP addresses of all mobile data (rmnet*) and
-     * Wi-Fi (wlan*) interfaces, or null if no such interfaces exist.
+     * Returns a deterministic fingerprint of the IP addresses of the interface that carries the
+     * device's internet traffic (i.e., the interface of the default network's default route),
+     * or an empty string if the device is currently disconnected from the internet.
+     *
+     * This intentionally ignores all other network interfaces (e.g., the cellular interface used
+     * for calls), as only the default network's interface determines the device's IP address.
      */
     fun getNetworkFingerprint(): String? {
-        val interfaces = try {
+        val connectivityManager = context.applicationContext.getSystemService<ConnectivityManager>()
+            ?: return null
+        val activeNetwork = connectivityManager.activeNetwork
+            ?: return NO_ACTIVE_NETWORK_FINGERPRINT
+        val linkProperties = connectivityManager.getLinkProperties(activeNetwork)
+            ?: return null
+        val interfaceName = linkProperties.routes
+            .firstOrNull { it.isDefaultRoute }
+            ?.getInterface()
+            ?: return null
+
+        val addresses = try {
             NetworkInterface.getNetworkInterfaces()
+                .asSequence()
+                .firstOrNull { it.name == interfaceName }
+                ?.inetAddresses
+                ?.asSequence()
+                ?.map { it.hostAddress }
+                ?.sorted()
+                ?.toList()
         } catch (_: Exception) {
-            null
-        } ?: return null
-
-        val monitoredInterfaces = interfaces
-            .asSequence()
-            .filter { interfaceInfo ->
-                interfaceInfo.name.startsWith("rmnet") || interfaceInfo.name.startsWith("wlan")
-            }
-            .map { interfaceInfo ->
-                interfaceInfo.name to interfaceInfo.inetAddresses
-                    .asSequence()
-                    .map { it.hostAddress }
-                    .sorted()
-                    .toList()
-            }
-            .sortedBy { it.first }
-            .toList()
-
-        if (monitoredInterfaces.isEmpty()) {
+            return null
+        }
+        if (addresses == null) {
             return null
         }
 
-        return monitoredInterfaces.joinToString(separator = "\n") { (name, addresses) ->
-            "$name:${addresses.joinToString(separator = ",")}"
-        }
+        return "$interfaceName:${addresses.joinToString(separator = ",")}"
+    }
+
+    private companion object {
+        const val NO_ACTIVE_NETWORK_FINGERPRINT = ""
     }
 
     private fun formatIPV4Address(ip: Int): String =
