@@ -112,6 +112,8 @@ data class Shortcut(
     val targetBrowser: TargetBrowser,
     @ColumnInfo(name = "exclude_from_history")
     val excludeFromHistory: Boolean,
+    @ColumnInfo(name = "trigger_on_network_change", defaultValue = "0")
+    val triggerOnNetworkChange: Boolean,
     @ColumnInfo(name = "client_cert_params")
     val clientCertParams: ClientCertParams?,
     @ColumnInfo(name = "request_body_type")
@@ -258,6 +260,7 @@ data class Shortcut(
                 codeOnFailure = "",
                 targetBrowser = TargetBrowser.Browser(packageName = null),
                 excludeFromHistory = false,
+                triggerOnNetworkChange = false,
                 clientCertParams = null,
                 requestBodyType = RequestBodyType.CUSTOM_TEXT,
                 ipVersion = null,

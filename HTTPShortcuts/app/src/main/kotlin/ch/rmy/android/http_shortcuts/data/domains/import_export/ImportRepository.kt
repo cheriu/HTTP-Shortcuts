@@ -282,6 +282,7 @@ constructor(
                 codeOnFailure = shortcut.codeOnFailure ?: "",
                 targetBrowser = shortcut.browserPackageName?.let { TargetBrowser.parse(it) } ?: TargetBrowser.Browser(null),
                 excludeFromHistory = shortcut.excludeFromHistory == true,
+                triggerOnNetworkChange = shortcut.triggerOnNetworkChange == true,
                 clientCertParams = shortcut.clientCert?.let { ClientCertParams.parse(it) },
                 requestBodyType = RequestBodyType.parse(shortcut.requestBodyType!!) ?: RequestBodyType.CUSTOM_TEXT,
                 ipVersion = shortcut.protocolVersion?.let { IpVersion.parse(it) },

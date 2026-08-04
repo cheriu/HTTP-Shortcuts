@@ -1533,6 +1533,10 @@
     <string name="empty_state_history_instructions">You will see details about recently triggered shortcuts here, which you can use for troubleshooting.\nYou can exclude individual shortcuts from appearing here via an option found on the \“%s\” screen.</string>
     <!-- Label for option in shortcut editor, selecting it will cause the shortcut to not appear in the event history anymore when it is triggered -->
     <string name="label_exclude_from_history">Exclude from event history</string>
+    <!-- Label for option in the shortcut editor, shown for multi shortcuts, selecting it will cause the shortcut to be executed automatically whenever the device's IP address changes -->
+    <string name="label_trigger_on_network_change">Trigger on IP change</string>
+    <!-- Instructions shown for the "trigger on IP change" option, explaining how the trigger works -->
+    <string name="instructions_trigger_on_network_change">The shortcut will be executed automatically whenever the IP address of the mobile data or Wi-Fi connection changes. Frequent changes are debounced for a few seconds to avoid multiple executions.</string>
     <!-- Title of event history entry, which states that a shortcut was triggered. %s is a placeholder for the shortcut's name -->
     <string name="event_history_title_shortcut_triggered">\“%s\” triggered</string>
     <!-- Title of event history entry, which states that a shortcut was cancelled. %s is a placeholder for the shortcut's name -->

@@ -9,6 +9,7 @@ import androidx.core.content.getSystemService
 import ch.rmy.android.framework.extensions.showToast
 import ch.rmy.android.framework.extensions.startActivity
 import ch.rmy.android.http_shortcuts.R
+import java.net.NetworkInterface
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,41 @@ constructor(
             ?.ipAddress
             ?.takeUnless { it == 0 }
             ?.let(::formatIPV4Address)
+
+    /**
+     * Returns a deterministic fingerprint of the IP addresses of all mobile data (rmnet*) and
+     * Wi-Fi (wlan*) interfaces, or null if no such interfaces exist.
+     */
+    fun getNetworkFingerprint(): String? {
+        val interfaces = try {
+            NetworkInterface.getNetworkInterfaces()
+        } catch (_: Exception) {
+            null
+        } ?: return null
+
+        val monitoredInterfaces = interfaces
+            .asSequence()
+            .filter { interfaceInfo ->
+                interfaceInfo.name.startsWith("rmnet") || interfaceInfo.name.startsWith("wlan")
+            }
+            .map { interfaceInfo ->
+                interfaceInfo.name to interfaceInfo.inetAddresses
+                    .asSequence()
+                    .map { it.hostAddress }
+                    .sorted()
+                    .toList()
+            }
+            .sortedBy { it.first }
+            .toList()
+
+        if (monitoredInterfaces.isEmpty()) {
+            return null
+        }
+
+        return monitoredInterfaces.joinToString(separator = "\n") { (name, addresses) ->
+            "$name:${addresses.joinToString(separator = ",")}"
+        }
+    }
 
     private fun formatIPV4Address(ip: Int): String =
         "${ip shr 0 and 0xFF}.${ip shr 8 and 0xFF}.${ip shr 16 and 0xFF}.${ip shr 24 and 0xFF}"

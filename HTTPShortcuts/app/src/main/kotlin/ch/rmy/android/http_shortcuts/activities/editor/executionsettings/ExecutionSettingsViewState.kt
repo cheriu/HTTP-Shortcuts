@@ -17,6 +17,8 @@ data class ExecutionSettingsViewState(
     val secondaryLauncherShortcut: Boolean,
     val quickSettingsTileShortcut: Boolean,
     val excludeFromHistory: Boolean,
+    val triggerOnNetworkChange: Boolean,
+    val triggerOnNetworkChangeOptionVisible: Boolean,
     val repetitionInterval: Int?,
     val canUseBiometrics: Boolean,
     val excludeFromFileSharing: Boolean,

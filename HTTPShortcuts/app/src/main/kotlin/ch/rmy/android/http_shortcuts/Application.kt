@@ -7,6 +7,7 @@ import ch.rmy.android.framework.extensions.GlobalLogger
 import ch.rmy.android.framework.extensions.logException
 import ch.rmy.android.http_shortcuts.data.settings.UserPreferences
 import ch.rmy.android.http_shortcuts.logging.Logging
+import ch.rmy.android.http_shortcuts.scheduling.NetworkChangeMonitor
 import ch.rmy.android.http_shortcuts.utils.DarkThemeHelper
 import ch.rmy.android.http_shortcuts.utils.LocaleHelper
 import dagger.hilt.android.HiltAndroidApp
@@ -27,6 +28,9 @@ class Application : android.app.Application(), Configuration.Provider {
 
     @Inject
     lateinit var userPreferences: UserPreferences
+
+    @Inject
+    lateinit var networkChangeMonitor: NetworkChangeMonitor
 
     override val workManagerConfiguration: Configuration by lazy {
         Configuration.Builder()
@@ -49,6 +53,8 @@ class Application : android.app.Application(), Configuration.Provider {
         }
 
         DarkThemeHelper.applyDarkThemeSettings(userPreferences.darkThemeSetting)
+
+        networkChangeMonitor.start()
     }
 
     companion object {

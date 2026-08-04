@@ -55,6 +55,7 @@ data class ImportExportShortcut(
     val codeOnFailure: String? = null,
     val browserPackageName: String? = null,
     val excludeFromHistory: Boolean? = null,
+    val triggerOnNetworkChange: Boolean? = null,
     val excludeFromFileSharing: Boolean? = null,
     val runInForegroundService: Boolean? = null,
     val wolMacAddress: String? = null,

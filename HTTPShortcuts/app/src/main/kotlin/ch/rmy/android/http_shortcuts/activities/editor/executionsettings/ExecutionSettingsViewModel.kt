@@ -7,6 +7,7 @@ import ch.rmy.android.http_shortcuts.data.domains.request_parameters.RequestPara
 import ch.rmy.android.http_shortcuts.data.domains.shortcuts.TemporaryShortcutRepository
 import ch.rmy.android.http_shortcuts.data.enums.ConfirmationType
 import ch.rmy.android.http_shortcuts.data.enums.ParameterType
+import ch.rmy.android.http_shortcuts.data.enums.ShortcutExecutionType
 import ch.rmy.android.http_shortcuts.data.models.Shortcut.Companion.TEMPORARY_ID
 import ch.rmy.android.http_shortcuts.data.settings.DeviceLocalPreferences
 import ch.rmy.android.http_shortcuts.extensions.canUseFiles
@@ -58,6 +59,8 @@ constructor(
             delay = shortcut.delay.milliseconds,
             confirmationType = shortcut.confirmationType,
             excludeFromHistory = shortcut.excludeFromHistory,
+            triggerOnNetworkChange = shortcut.triggerOnNetworkChange,
+            triggerOnNetworkChangeOptionVisible = shortcut.executionType == ShortcutExecutionType.TRIGGER,
             repetitionInterval = shortcut.repetitionInterval,
             canUseBiometrics = biometricUtil.canUseBiometrics(),
             excludeFromFileSharing = shortcut.excludeFromFileSharing,
@@ -81,6 +84,15 @@ constructor(
         }
         withProgressTracking {
             temporaryShortcutRepository.setExcludeFromHistory(excludeFromHistory)
+        }
+    }
+
+    fun onTriggerOnNetworkChangeChanged(triggerOnNetworkChange: Boolean) = runAction {
+        updateViewState {
+            copy(triggerOnNetworkChange = triggerOnNetworkChange)
+        }
+        withProgressTracking {
+            temporaryShortcutRepository.setTriggerOnNetworkChange(triggerOnNetworkChange)
         }
     }
 

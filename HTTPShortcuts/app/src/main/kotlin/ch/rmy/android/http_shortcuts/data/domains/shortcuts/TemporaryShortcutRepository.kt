@@ -297,6 +297,12 @@ constructor(
         }
     }
 
+    suspend fun setTriggerOnNetworkChange(triggerOnNetworkChange: Boolean) {
+        updateShortcut {
+            copy(triggerOnNetworkChange = triggerOnNetworkChange)
+        }
+    }
+
     suspend fun setRunInForegroundService(runInForegroundService: Boolean) {
         updateShortcut {
             copy(runInForegroundService = runInForegroundService)

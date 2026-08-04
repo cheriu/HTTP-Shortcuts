@@ -38,6 +38,8 @@ fun ExecutionSettingsContent(
     secondaryLauncherShortcut: Boolean,
     quickSettingsTileShortcut: Boolean,
     excludeFromHistory: Boolean,
+    triggerOnNetworkChange: Boolean,
+    triggerOnNetworkChangeOptionVisible: Boolean,
     repetitionInterval: Int?,
     canUseBiometrics: Boolean,
     excludeFromFileSharing: Boolean,
@@ -48,6 +50,7 @@ fun ExecutionSettingsContent(
     onSecondaryLauncherShortcutChanged: (Boolean) -> Unit,
     onQuickSettingsTileShortcutChanged: (Boolean) -> Unit,
     onExcludeFromHistoryChanged: (Boolean) -> Unit,
+    onTriggerOnNetworkChangeChanged: (Boolean) -> Unit,
     onConfirmationTypeChanged: (ConfirmationType?) -> Unit,
     onWaitForConnectionChanged: (Boolean) -> Unit,
     onDelayButtonClicked: () -> Unit,
@@ -161,6 +164,23 @@ fun ExecutionSettingsContent(
 
         HorizontalDivider()
 
+        if (triggerOnNetworkChangeOptionVisible) {
+            Checkbox(
+                label = stringResource(R.string.label_trigger_on_network_change),
+                checked = triggerOnNetworkChange,
+                onCheckedChange = onTriggerOnNetworkChangeChanged,
+            )
+
+            AnimatedVisibility(visible = triggerOnNetworkChange) {
+                HelpText(
+                    text = stringResource(R.string.instructions_trigger_on_network_change),
+                    modifier = Modifier.padding(top = Spacing.SMALL),
+                )
+            }
+
+            HorizontalDivider()
+        }
+
         Checkbox(
             label = stringResource(R.string.label_exclude_from_history),
             checked = excludeFromHistory,
@@ -223,6 +243,8 @@ private fun ExecutionSettingsContent_Preview() {
         secondaryLauncherShortcut = false,
         quickSettingsTileShortcut = false,
         excludeFromHistory = false,
+        triggerOnNetworkChange = false,
+        triggerOnNetworkChangeOptionVisible = false,
         repetitionInterval = 0,
         canUseBiometrics = false,
         excludeFromFileSharing = false,
@@ -233,6 +255,7 @@ private fun ExecutionSettingsContent_Preview() {
         onSecondaryLauncherShortcutChanged = {},
         onQuickSettingsTileShortcutChanged = {},
         onExcludeFromHistoryChanged = {},
+        onTriggerOnNetworkChangeChanged = {},
         onConfirmationTypeChanged = {},
         onWaitForConnectionChanged = {},
         onDelayButtonClicked = {},

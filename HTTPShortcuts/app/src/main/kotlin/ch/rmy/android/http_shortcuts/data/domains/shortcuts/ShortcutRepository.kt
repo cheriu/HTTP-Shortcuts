@@ -67,6 +67,10 @@ constructor(
         shortcutDao().getQuickSettingsShortcuts()
     }
 
+    suspend fun getTriggerShortcutsThatTriggerOnNetworkChange(): List<Shortcut> = query {
+        shortcutDao().getTriggerShortcutsThatTriggerOnNetworkChange()
+    }
+
     suspend fun hasSecondaryLauncherShortcuts(): Boolean = query {
         shortcutDao().countSecondaryLauncherShortcuts() != 0
     }

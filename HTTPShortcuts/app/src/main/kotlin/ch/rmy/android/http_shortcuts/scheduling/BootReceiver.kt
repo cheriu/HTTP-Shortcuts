@@ -19,6 +19,9 @@ class BootReceiver : BroadcastReceiver() {
     @Inject
     lateinit var syncScheduler: SyncScheduler
 
+    @Inject
+    lateinit var networkChangeMonitor: NetworkChangeMonitor
+
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) {
             return
@@ -27,6 +30,7 @@ class BootReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.Default).launch {
             executionScheduler.schedule()
             syncScheduler.schedule()
+            networkChangeMonitor.start()
         }
     }
 }

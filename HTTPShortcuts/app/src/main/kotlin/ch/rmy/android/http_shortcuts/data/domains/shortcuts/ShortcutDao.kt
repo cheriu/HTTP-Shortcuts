@@ -17,6 +17,12 @@ interface ShortcutDao {
     @Query("SELECT * FROM shortcut WHERE id != ${Shortcut.TEMPORARY_ID} AND quick_settings_tile_shortcut = 1 ORDER BY name")
     suspend fun getQuickSettingsShortcuts(): List<Shortcut>
 
+    @Query(
+        "SELECT * FROM shortcut WHERE id != ${Shortcut.TEMPORARY_ID} " +
+            "AND execution_type = 'trigger' AND trigger_on_network_change = 1 ORDER BY name",
+    )
+    suspend fun getTriggerShortcutsThatTriggerOnNetworkChange(): List<Shortcut>
+
     @Query("SELECT * FROM shortcut WHERE id != ${Shortcut.TEMPORARY_ID} ORDER BY sorting_order ASC")
     fun observeShortcuts(): Flow<List<Shortcut>>
 
