@@ -13,11 +13,18 @@ import ch.rmy.android.http_shortcuts.R
 import ch.rmy.android.http_shortcuts.data.dtos.ActiveNetworkInfo
 import ch.rmy.android.http_shortcuts.data.dtos.AddressInfo
 import ch.rmy.android.http_shortcuts.data.dtos.NetworkInterfaceInfo
+import java.net.Inet4Address
+import java.net.Inet6Address
 import java.net.NetworkInterface
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+data class IpAddressInfo(
+    val address: String,
+    val interfaceName: String?,
+)
 
 class NetworkUtil
 @Inject
@@ -87,8 +94,42 @@ constructor(
         return "$interfaceName:${addresses.joinToString(separator = ",")}"
     }
 
-    private companion object {
+    companion object {
         const val NO_ACTIVE_NETWORK_FINGERPRINT = ""
+
+        fun getIpv4AddressInfo(context: Context): IpAddressInfo? {
+            val connectivityManager = context.applicationContext.getSystemService<ConnectivityManager>()
+                ?: return null
+            val activeNetwork = connectivityManager.activeNetwork
+                ?: return null
+            val linkProperties = connectivityManager.getLinkProperties(activeNetwork)
+                ?: return null
+            val address = linkProperties.linkAddresses
+                ?.asSequence()
+                ?.map { it.address }
+                ?.filter { it is Inet4Address && !it.isLoopbackAddress }
+                ?.map { it.hostAddress }
+                ?.firstOrNull()
+                ?: return null
+            return IpAddressInfo(address, linkProperties.interfaceName)
+        }
+
+        fun getIpv6AddressInfo(context: Context): IpAddressInfo? {
+            val connectivityManager = context.applicationContext.getSystemService<ConnectivityManager>()
+                ?: return null
+            val activeNetwork = connectivityManager.activeNetwork
+                ?: return null
+            val linkProperties = connectivityManager.getLinkProperties(activeNetwork)
+                ?: return null
+            val address = linkProperties.linkAddresses
+                ?.asSequence()
+                ?.map { it.address }
+                ?.filter { it is Inet6Address && !it.isLinkLocalAddress && !it.isLoopbackAddress }
+                ?.map { it.hostAddress }
+                ?.firstOrNull()
+                ?: return null
+            return IpAddressInfo(address, linkProperties.interfaceName)
+        }
     }
 
     private fun formatIPV4Address(ip: Int): String =
@@ -121,6 +162,12 @@ constructor(
         } catch (_: Exception) {
             emptyList()
         }
+
+    fun getActiveIpv4Address(): String? =
+        getIpv4AddressInfo(context)?.address
+
+    fun getActiveIpv6Address(): String? =
+        getIpv6AddressInfo(context)?.address
 
     fun getActiveNetworkInfo(): ActiveNetworkInfo? {
         val connectivityManager = context.applicationContext.getSystemService<ConnectivityManager>()

@@ -27,6 +27,7 @@ import ch.rmy.android.http_shortcuts.data.dtos.GlobalVariablePlaceholder
 import ch.rmy.android.http_shortcuts.data.settings.DeviceLocalPreferences
 import ch.rmy.android.http_shortcuts.navigation.NavigationDestination
 import ch.rmy.android.http_shortcuts.navigation.ResultHandler
+import ch.rmy.android.http_shortcuts.utils.NetworkUtil
 import ch.rmy.android.http_shortcuts.variables.Variables
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
@@ -42,6 +43,8 @@ fun VariablePickerDialog(
     onDismissRequested: () -> Unit,
 ) {
     val context = LocalContext.current
+    val ipv4Info = remember(context) { NetworkUtil.getIpv4AddressInfo(context) }
+    val ipv6Info = remember(context) { NetworkUtil.getIpv6AddressInfo(context) }
     var showFirstTimeDialog by rememberSaveable {
         mutableStateOf(!skipFirstTimeDialog && !DeviceLocalPreferences(context).isAwareOfVariablePlaceholders)
     }
@@ -170,6 +173,31 @@ fun VariablePickerDialog(
                     modifier = Modifier
                         .padding(horizontal = horizontalPadding)
                         .padding(vertical = Spacing.MEDIUM),
+                )
+            }
+
+            item(
+                key = "builtin-ipv4",
+            ) {
+                SelectDialogEntry(
+                    horizontalPadding = horizontalPadding,
+                    label = stringResource(R.string.builtin_variable_ipv4),
+                    description = ipv4Info?.let { "${it.address}${it.interfaceName?.let { name -> " ($name)" } ?: ""}" } ?: stringResource(R.string.builtin_variable_ipv4_description),
+                    onClick = {
+                        onVariableSelected(VariableKeyOrId(Variables.BUILTIN_IPV4_KEY))
+                    },
+                )
+            }
+            item(
+                key = "builtin-ipv6",
+            ) {
+                SelectDialogEntry(
+                    horizontalPadding = horizontalPadding,
+                    label = stringResource(R.string.builtin_variable_ipv6),
+                    description = ipv6Info?.let { "${it.address}${it.interfaceName?.let { name -> " ($name)" } ?: ""}" } ?: stringResource(R.string.builtin_variable_ipv6_description),
+                    onClick = {
+                        onVariableSelected(VariableKeyOrId(Variables.BUILTIN_IPV6_KEY))
+                    },
                 )
             }
 

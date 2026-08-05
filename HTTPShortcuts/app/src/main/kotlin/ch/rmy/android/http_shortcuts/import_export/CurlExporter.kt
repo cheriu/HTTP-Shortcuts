@@ -18,9 +18,12 @@ import ch.rmy.android.http_shortcuts.data.models.Shortcut
 import ch.rmy.android.http_shortcuts.extensions.getRequestParametersForShortcut
 import ch.rmy.android.http_shortcuts.extensions.resolve
 import ch.rmy.android.http_shortcuts.http.HttpHeaders
+import ch.rmy.android.http_shortcuts.utils.NetworkUtil
 import ch.rmy.android.http_shortcuts.variables.ResolvedVariableValues
 import ch.rmy.android.http_shortcuts.variables.VariableManager
 import ch.rmy.android.http_shortcuts.variables.VariableResolver
+import ch.rmy.android.http_shortcuts.variables.Variables.BUILTIN_IPV4_KEY
+import ch.rmy.android.http_shortcuts.variables.Variables.BUILTIN_IPV6_KEY
 import ch.rmy.android.http_shortcuts.variables.Variables.rawPlaceholdersToResolvedValues
 import ch.rmy.curlcommand.CurlCommand
 import javax.inject.Inject
@@ -32,6 +35,7 @@ constructor(
     private val requestParameterRepository: RequestParameterRepository,
     private val globalVariableRepository: GlobalVariableRepository,
     private val variableResolver: VariableResolver,
+    private val networkUtil: NetworkUtil,
 ) {
 
     suspend fun generateCommand(shortcut: Shortcut, dialogHandle: DialogHandle): CurlCommand {
@@ -41,7 +45,13 @@ constructor(
 
     private suspend fun resolveVariables(shortcut: Shortcut, dialogHandle: DialogHandle): VariableManager {
         val variables = globalVariableRepository.getGlobalVariables()
-        val variableManager = VariableManager(variables)
+        val variableManager = VariableManager(
+            variables,
+            builtInVariableValues = mapOf(
+                BUILTIN_IPV4_KEY to (networkUtil.getActiveIpv4Address() ?: ""),
+                BUILTIN_IPV6_KEY to (networkUtil.getActiveIpv6Address() ?: ""),
+            ),
+        )
         variableResolver.resolve(
             variableManager = variableManager,
             shortcut = shortcut,

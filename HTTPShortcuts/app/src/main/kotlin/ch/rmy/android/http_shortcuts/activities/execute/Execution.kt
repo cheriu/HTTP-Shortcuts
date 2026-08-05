@@ -61,9 +61,11 @@ import ch.rmy.android.http_shortcuts.utils.ErrorFormatter
 import ch.rmy.android.http_shortcuts.utils.FileTypeUtil
 import ch.rmy.android.http_shortcuts.utils.FilesCleanupWorker
 import ch.rmy.android.http_shortcuts.utils.LauncherShortcutManager
+import ch.rmy.android.http_shortcuts.utils.NetworkUtil
 import ch.rmy.android.http_shortcuts.utils.WorkingDirectoryUtil
 import ch.rmy.android.http_shortcuts.variables.VariableManager
 import ch.rmy.android.http_shortcuts.variables.VariableResolver
+import ch.rmy.android.http_shortcuts.variables.Variables
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -120,6 +122,8 @@ class Execution(
         get() = entryPoint.variableRepository()
     private val variableResolver: VariableResolver
         get() = entryPoint.variableResolver()
+    private val networkUtil: NetworkUtil
+        get() = entryPoint.networkUtil()
     private val launcherShortcutManager: LauncherShortcutManager
         get() = entryPoint.launcherShortcutManager()
     private val requestSimpleConfirmation: RequestSimpleConfirmationUseCase
@@ -259,6 +263,10 @@ class Execution(
         val variableManager = VariableManager(
             globalVariables = globalVariableRepository.getGlobalVariables(),
             preResolvedValues = params.variableValues,
+            builtInVariableValues = mapOf(
+                Variables.BUILTIN_IPV4_KEY to (networkUtil.getActiveIpv4Address() ?: ""),
+                Variables.BUILTIN_IPV6_KEY to (networkUtil.getActiveIpv6Address() ?: ""),
+            ),
         )
 
         if (shouldDelayExecution()) {
@@ -487,6 +495,7 @@ class Execution(
         fun appConfigRepository(): AppConfigRepository
         fun variableRepository(): GlobalVariableRepository
         fun variableResolver(): VariableResolver
+        fun networkUtil(): NetworkUtil
         fun launcherShortcutManager(): LauncherShortcutManager
         fun requestSimpleConfirmation(): RequestSimpleConfirmationUseCase
         fun requestBiometricConfirmation(): RequestBiometricConfirmationUseCase

@@ -14,6 +14,9 @@ object Variables {
     const val VARIABLE_KEY_REGEX = "[A-Za-z0-9_]{1,$KEY_MAX_LENGTH}"
     private const val VARIABLE_PLACEHOLDER_INNER_REGEX = "($UUID_REGEX|[0-9]+|$VARIABLE_KEY_REGEX)"
 
+    const val BUILTIN_IPV4_KEY = "ipv4"
+    const val BUILTIN_IPV6_KEY = "ipv6"
+
     private const val RAW_PLACEHOLDER_PREFIX = "{{"
     private const val RAW_PLACEHOLDER_SUFFIX = "}}"
     val RAW_PLACEHOLDER_REGEX = "${quote(RAW_PLACEHOLDER_PREFIX)}$VARIABLE_PLACEHOLDER_INNER_REGEX${quote(RAW_PLACEHOLDER_SUFFIX)}"

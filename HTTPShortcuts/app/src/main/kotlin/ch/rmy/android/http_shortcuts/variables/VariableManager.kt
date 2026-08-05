@@ -11,6 +11,7 @@ import org.json.JSONObject
 class VariableManager(
     globalVariables: List<GlobalVariable>,
     preResolvedValues: Map<VariableKeyOrId, String> = emptyMap(),
+    builtInVariableValues: Map<VariableKey, String> = emptyMap(),
 ) {
     var globalVariables = globalVariables
         private set
@@ -32,6 +33,8 @@ class VariableManager(
                 }
             }
         }
+
+        localVariablesValues.putAll(builtInVariableValues)
     }
 
     fun getGlobalVariableById(id: GlobalVariableId): GlobalVariable? =
